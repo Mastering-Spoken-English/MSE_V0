@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import razorpay from "../config/razopay.js";
-import Order from "../models/Order.js";
+import Order from "../models/order.js";
 import sendEmail from "../utils/sendEmail.js";
 
 
