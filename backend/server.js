@@ -5,12 +5,27 @@ import express from "express";
 import connectDB from "./config/db.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 
+const allowedOrigins = [
+  "https://mse-v0-8j7wube52-shreyas-kumar-ms-projects.vercel.app", // frontend deployed domain
+];
+
 dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
-
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 // Special middleware for Razorpay Webhook
 app.use("/api/payment/webhook", express.raw({ type: "application/json" }));
 
