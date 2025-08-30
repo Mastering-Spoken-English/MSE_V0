@@ -5,40 +5,42 @@ import express from "express";
 import connectDB from "./config/db.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 
-const allowedOrigins = [
-  "https://mse-v0-8j7wube52-shreyas-kumar-ms-projects.vercel.app", // frontend deployed domain
-];
-
 dotenv.config();
 connectDB();
 
 const app = express();
+
+// ✅ CORS first, before routes
+const allowedOrigins = [
+  "https://mse-v0.vercel.app", // use the stable frontend domain (set this as alias in Vercel)
+  "http://localhost:5173",     // for local dev (optional)
+];
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
-// Special middleware for Razorpay Webhook
+
+// ✅ Explicit OPTIONS handling (fixes preflight issues)
+app.options("*", cors());
+
+// ✅ Razorpay Webhook route (raw body)
 app.use("/api/payment/webhook", express.raw({ type: "application/json" }));
 
-// Normal JSON parser for all other routes
+// ✅ Normal JSON parser for all other routes
 app.use(bodyParser.json());
 
-// Routes
+// ✅ Routes
 app.use("/api/payment", paymentRoutes);
 
-// ✅ Export app for Vercel
+// Export app for Vercel
 export default app;
 
-// ✅ Local run (Vercel ignores this block)
+// Local run
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
