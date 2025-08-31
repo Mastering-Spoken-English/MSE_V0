@@ -13,7 +13,7 @@ export const createOrder = async (req, res) => {
     const { name, email, phone } = req.body;
 
     const options = {
-      amount: 50000, // amount in paise (50000 = ₹500)
+      amount: 19900, // amount in paise (50000 = ₹500)
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };

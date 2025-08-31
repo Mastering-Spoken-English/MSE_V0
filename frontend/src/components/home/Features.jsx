@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Features = () => {
   const features = [
@@ -164,7 +165,10 @@ const Features = () => {
         {/* Call to action */}
         <div className="text-center mt-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 cursor-pointer">
-            <span>Experience These Features</span>
+            <Link to="/payments">
+              <span className="relative z-10">Experience These Features</span>
+            </Link>
+
             <svg
               className="w-5 h-5"
               fill="none"
