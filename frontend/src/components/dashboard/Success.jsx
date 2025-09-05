@@ -13,9 +13,18 @@ const Success = () => {
         </p>
         <p className="text-gray-600">
           You will receive access to your course within 24 hours. <br />
-          If not, please contact :{" "}
+          If not, please contact : <br />
+          phone no :
           <a href="tel:8884785555" className="text-blue-500 underline">
-            8884785555
+            9019562849
+          </a>
+          <br />
+          email :
+          <a
+            href="mailto:speakmasterteam@gmail.com"
+            className="text-blue-600 underline font-medium"
+          >
+            speakmasterteam@gmail.com
           </a>
         </p>
       </div>
