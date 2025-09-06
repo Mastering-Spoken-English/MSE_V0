@@ -81,6 +81,32 @@ export const verifyPayment = async (req, res) => {
 
         await sendEmail("New Course Purchase", message, process.env.ADMIN_EMAIL);
 
+        // Email to User
+        const userMessage = `
+        Payment Successful!
+
+        Hi ${order.name},
+
+        Thank you for purchasing *${order.courseName || "Mastering Spoken English Course"}*.
+
+        Payment Details
+        -------------------------
+        Name: ${order.name}
+        Email: ${order.email}
+        Amount Paid: ₹${order.amount}
+        Payment ID: ${razorpayPaymentId}
+        Time: ${formattedIndiaTime}
+
+        Your course purchase is successful.   
+        You will receive an email once the link is activated before 24 hours.
+
+        Regards,  
+        ${process.env.APP_NAME || "Course Team"}
+        `;
+
+        await sendEmail("Payment Successful - Course Purchase", userMessage, order.email);
+
+
         return res.json({ success: true, message: "Payment verified successfully" });
       }
     } else {
