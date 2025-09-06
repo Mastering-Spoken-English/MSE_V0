@@ -56,6 +56,17 @@ export const verifyPayment = async (req, res) => {
         order.status = "paid";
         await order.save();
 
+        const indiaTime = new Date().toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+        const formattedIndiaTime = indiaTime.replace(",", " |") + " IST";
+
         // Send email to admin
         const message = `
         ✅ New Course Purchase
@@ -65,7 +76,7 @@ export const verifyPayment = async (req, res) => {
         Phone: ${order.phone}
         Amount: ₹${order.amount}
         Payment ID: ${razorpayPaymentId}
-        Time: ${new Date().toLocaleString()}
+        Time: ${formattedIndiaTime}
         `;
 
         await sendEmail("New Course Purchase", message, process.env.ADMIN_EMAIL);
