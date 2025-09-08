@@ -56,6 +56,17 @@ export const verifyPayment = async (req, res) => {
         order.status = "paid";
         await order.save();
 
+        const indiaTime = new Date().toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+        const formattedIndiaTime = indiaTime.replace(",", " |") + " IST";
+
         // Send email to admin
         const message = `
         ✅ New Course Purchase
@@ -65,10 +76,36 @@ export const verifyPayment = async (req, res) => {
         Phone: ${order.phone}
         Amount: ₹${order.amount}
         Payment ID: ${razorpayPaymentId}
-        Time: ${new Date().toLocaleString()}
+        Time: ${formattedIndiaTime}
         `;
 
         await sendEmail("New Course Purchase", message, process.env.ADMIN_EMAIL);
+
+        // Email to User
+        const userMessage = `
+        Payment Successful!
+
+        Hi ${order.name},
+
+        Thank you for purchasing *${order.courseName || "Mastering Spoken English Course"}*.
+
+        Payment Details
+        -------------------------
+        Name: ${order.name}
+        Email: ${order.email}
+        Amount Paid: ₹${order.amount}
+        Payment ID: ${razorpayPaymentId}
+        Time: ${formattedIndiaTime}
+
+        Your course purchase is successful.   
+        You will receive an email once the link is activated before 24 hours.
+
+        Regards,  
+        ${process.env.APP_NAME || "Course Team"}
+        `;
+
+        await sendEmail("Payment Successful - Course Purchase", userMessage, order.email);
+
 
         return res.json({ success: true, message: "Payment verified successfully" });
       }
