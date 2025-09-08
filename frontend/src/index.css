@@ -1,1 +1,240 @@
 @import "tailwindcss";
+
+/* Browser Compatibility Fixes for Windows 7 and Older Browsers */
+/* Only target specific older browsers, not modern ones */
+
+/* Viewport fixes for older browsers */
+@viewport {
+  width: device-width;
+  initial-scale: 1;
+}
+
+/* Ensure proper responsive behavior */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Only apply fixes for Internet Explorer and very old browsers */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  /* Internet Explorer specific fixes */
+  .flex {
+    display: -ms-flexbox;
+  }
+
+  .flex-col {
+    -ms-flex-direction: column;
+  }
+
+  .flex-row {
+    -ms-flex-direction: row;
+  }
+
+  .items-center {
+    -ms-flex-align: center;
+  }
+
+  .justify-center {
+    -ms-flex-pack: center;
+  }
+
+  .justify-between {
+    -ms-flex-pack: justify;
+  }
+
+  .flex-wrap {
+    -ms-flex-wrap: wrap;
+  }
+}
+
+/* Only for browsers that don't support CSS Grid (older Chrome, Firefox) */
+@supports not (display: grid) {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .grid-cols-1 > * {
+    width: 100%;
+  }
+
+  .grid-cols-2 > * {
+    width: 50%;
+  }
+
+  .grid-cols-3 > * {
+    width: 33.333333%;
+  }
+
+  .grid-cols-4 > * {
+    width: 25%;
+  }
+
+  /* Responsive grid fallbacks */
+  @media (max-width: 768px) {
+    .md\:grid-cols-2 > *,
+    .md\:grid-cols-3 > *,
+    .md\:grid-cols-4 > * {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lg\:grid-cols-4 > * {
+      width: 25%;
+    }
+  }
+}
+
+/* Gap fallbacks only for browsers without gap support */
+@supports not (gap: 1rem) {
+  .gap-2 > * + * {
+    margin-left: 0.5rem;
+  }
+
+  .gap-4 > * + * {
+    margin-left: 1rem;
+  }
+
+  .gap-6 > * + * {
+    margin-left: 1.5rem;
+  }
+
+  .gap-8 > * + * {
+    margin-left: 2rem;
+  }
+
+  /* Vertical gaps */
+  .gap-y-4 > * + * {
+    margin-top: 1rem;
+  }
+
+  .gap-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .gap-y-8 > * + * {
+    margin-top: 2rem;
+  }
+}
+
+/* Gradient fallbacks only for browsers that don't support CSS custom properties */
+@supports not (color: var(--test)) {
+  .bg-gradient-to-br.from-slate-50.via-blue-50.to-indigo-100 {
+    background: #f8fafc;
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 50%, #e0e7ff 100%);
+  }
+
+  .bg-gradient-to-br.from-blue-600.to-indigo-700 {
+    background: #2563eb;
+    background: linear-gradient(135deg, #2563eb 0%, #3730a3 100%);
+  }
+
+  .bg-gradient-to-r.from-blue-600.to-indigo-600 {
+    background: #2563eb;
+    background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
+  }
+
+  .bg-gradient-to-r.from-blue-600.to-purple-600 {
+    background: #2563eb;
+    background: linear-gradient(90deg, #2563eb 0%, #9333ea 100%);
+  }
+}
+
+/* Flexbox vendor prefixes only for older webkit browsers */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  _::-webkit-full-page-media,
+  _:future,
+  :root .flex {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+  }
+
+  _::-webkit-full-page-media,
+  _:future,
+  :root .flex-col {
+    -webkit-flex-direction: column;
+  }
+
+  _::-webkit-full-page-media,
+  _:future,
+  :root .items-center {
+    -webkit-align-items: center;
+  }
+
+  _::-webkit-full-page-media,
+  _:future,
+  :root .justify-center {
+    -webkit-justify-content: center;
+  }
+
+  _::-webkit-full-page-media,
+  _:future,
+  :root .justify-between {
+    -webkit-justify-content: space-between;
+  }
+}
+
+/* Transform and transition prefixes for older browsers */
+@media screen and (-webkit-transform-3d) {
+  .transform {
+    -webkit-transform: translateZ(0);
+  }
+
+  .transition,
+  .transition-all {
+    -webkit-transition: all 0.15s ease-in-out;
+  }
+
+  .duration-300 {
+    -webkit-transition-duration: 300ms;
+  }
+
+  .hover\:scale-105:hover {
+    -webkit-transform: scale(1.05);
+  }
+
+  .group-hover\:scale-110:hover {
+    -webkit-transform: scale(1.1);
+  }
+}
+
+/* Backdrop blur fallback */
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-blur-sm {
+    background: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Additional Windows 7 specific fixes */
+@media screen and (min-color-index: 0) and(-webkit-min-device-pixel-ratio:0) {
+  /* Old Chrome on Windows 7 fixes */
+  .rounded-2xl {
+    border-radius: 1rem;
+  }
+
+  .rounded-3xl {
+    border-radius: 1.5rem;
+  }
+}
+
+/* Ensure proper responsive behavior on older mobile browsers */
+@media screen and (max-width: 768px) {
+  /* Force proper mobile viewport */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  /* Ensure text remains readable */
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+}
